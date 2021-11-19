@@ -101,11 +101,13 @@ class RdKafkaContext implements Context
 
             $this->producer = new RdKafkaProducer($producer, $this->getSerializer());
 
-            // Once created RdKafkaProducer can store messages internally that need to be delivered before PHP shuts
-            // down. Otherwise, we are bound to lose messages in transit.
-            // Note that it is generally preferable to call "close" method explicitly before shutdown starts, since
-            // otherwise we might not have access to some objects, like database connections.
-            register_shutdown_function([$this->producer, 'flush'], $this->config['shutdown_timeout'] ?? -1);
+            if (isset($this->config['auto_flush']) && true === $this->config['auto_flush']) {
+                // Once created RdKafkaProducer can store messages internally that need to be delivered before PHP shuts
+                // down. Otherwise, we are bound to lose messages in transit.
+                // Note that it is generally preferable to call "close" method explicitly before shutdown starts, since
+                // otherwise we might not have access to some objects, like database connections.
+                register_shutdown_function([$this->producer, 'flush'], $this->config['shutdown_timeout'] ?? -1);
+            }
         }
 
         return $this->producer;
