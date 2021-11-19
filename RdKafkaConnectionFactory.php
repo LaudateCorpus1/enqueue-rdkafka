@@ -12,7 +12,7 @@ class RdKafkaConnectionFactory implements ConnectionFactory
     /**
      * @var array
      */
-    private $config;
+    protected $config;
 
     /**
      * The config could be an array, string DSN or null. In case of null it will attempt to connect to localhost with default settings.
@@ -52,7 +52,7 @@ class RdKafkaConnectionFactory implements ConnectionFactory
             throw new \LogicException('The config must be either an array of options, a DSN string or null');
         }
 
-        $this->config = array_replace_recursive($this->defaultConfig(), $config);
+        $this->config = $config;
     }
 
     /**
@@ -96,16 +96,6 @@ class RdKafkaConnectionFactory implements ConnectionFactory
 
         $config['global']['metadata.broker.list'] = $broker;
 
-        return array_replace_recursive($this->defaultConfig(), $config);
-    }
-
-    private function defaultConfig(): array
-    {
-        return [
-            'global' => [
-                'group.id' => uniqid('', true),
-                'metadata.broker.list' => 'localhost:9092',
-            ],
-        ];
+        return $config;
     }
 }

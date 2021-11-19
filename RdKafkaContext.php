@@ -123,7 +123,13 @@ class RdKafkaContext implements Context
         $queueName = $destination->getQueueName();
 
         if (!isset($this->rdKafkaConsumers[$queueName])) {
-            $this->kafkaConsumers[] = $kafkaConsumer = new KafkaConsumer($this->getConf());
+            $conf = $this->getConf();
+            
+            if (!isset($this->config['global']['group.id'])) {
+                $conf->set('group.id', uniqid('', true));
+            }
+            
+            $this->kafkaConsumers[] = $kafkaConsumer = new KafkaConsumer($conf);
 
             $consumer = new RdKafkaConsumer(
                 $kafkaConsumer,
