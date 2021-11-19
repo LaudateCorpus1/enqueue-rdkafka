@@ -17,6 +17,9 @@
         "queue-interop/queue-spec": "^0.6.2",
         "kwn/php-rdkafka-stubs": "^2.0.3"
     },
+    "replace": {
+        "enqueue/rdkafka": "^0.10.9"
+    }
     "support": {
         "email": "opensource@forma-pro.com",
         "issues": "https://github.com/php-enqueue/enqueue-dev/issues",
