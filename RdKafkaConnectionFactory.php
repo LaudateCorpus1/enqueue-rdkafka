@@ -60,7 +60,14 @@ class RdKafkaConnectionFactory implements ConnectionFactory
      */
     public function createContext(): Context
     {
-        return new RdKafkaContext($this->config);
+        $context = new RdKafkaContext($this->config);
+
+        if (isset($this->config['serializer']) && class_exists($this->config['serializer'])) {
+            $serializerClass = $this->config['serializer'];
+            $context->setSerializer(new $serializerClass());
+        }
+
+        return $context;
     }
 
     private function parseDsn(string $dsn): array
