@@ -19,7 +19,7 @@
     },
     "replace": {
         "enqueue/rdkafka": "^0.10.9"
-    }
+    },
     "support": {
         "email": "opensource@forma-pro.com",
         "issues": "https://github.com/php-enqueue/enqueue-dev/issues",
